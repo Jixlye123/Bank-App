@@ -8,6 +8,6 @@ import com.example.bankapp.model.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long>{
 	
-	Optional<Account> findByUserName(String username);
+	Optional<Account> findByUsername(String username);
 	
 }

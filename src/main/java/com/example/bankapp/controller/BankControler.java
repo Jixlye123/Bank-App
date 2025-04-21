@@ -46,7 +46,7 @@ public class BankControler {
 	
 	@GetMapping("/login")
 	public String login() {
-		return "login page";
+		return "login";
 	}
 	
 	@PostMapping("/deposit")

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-public class AccountService {
+public class AccountService implements UserDetailsService {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -33,13 +34,13 @@ public class AccountService {
 	private TransactionRepository transactionRepository;
 	
 	public Account findAccountByUsername(String username) {
-		return accountRepository.findByUserName(username)
+		return accountRepository.findByUsername(username)
 				.orElseThrow(() -> new RuntimeException("Account not Found"));
 		
 	}
 	
 	public Account registerAccount(String username, String password) {
-		if (accountRepository.findByUserName(username).isPresent()) {
+		if (accountRepository.findByUsername(username).isPresent()) {
 			throw new RuntimeException("Username already exists");
 		}
 		
@@ -109,7 +110,7 @@ public class AccountService {
 			throw new RuntimeException("Insufficient Funds");
 		}
 		
-		Account toAccount = accountRepository.findByUserName(toUsername)
+		Account toAccount = accountRepository.findByUsername(toUsername)
 				.orElseThrow(() -> new RuntimeException("Recipient account not found"));
 		
 		//DEDUCT
